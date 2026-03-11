@@ -1,98 +1,75 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { FlatList, Image, Text, View, TextInput } from "react-native";
+import { images } from "@/constants/images";
+import { icons } from "@/constants/icons";
+import SearchBar from "@/components/searchBar";
+import {useRouter} from "expo-router";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+export default function Index() {
+    const router = useRouter();
 
-export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
+    const services = [
+        { id: '1', name: "Carpenter", img: images.carpenter },
+        { id: '2', name: "Electrician", img: images.electric },
+        { id: '3', name: "Cleaning", img: images.cleaning },
+        { id: '4', name: "Colorwash", img: images.colorwash },
+        { id: '5', name: "Landscaping", img: images.landscaping },
+        { id: '6', name: "Masonry", img: images.mason },
+        { id: '7', name: "Welding", img: images.welding },
+        { id: '8', name: "Construction", img: images.construction },
+        { id: '9', name: "Cushioning", img: images.cushioning },
+        { id: '10', name: "Mechanic", img: images.mechanic },
+        { id: '11', name: "Plumbing", img: images.plumbing },
+        { id: '12', name: "Repairing", img: images.repairing },
+        { id: '13', name: "Roofing", img: images.roofing },
+        { id: '14', name: "Tiles", img: images.tile },
+    ];
+
+
+    const Header = () => (
+        <View className="mt-10 px-5">
+            <View className="justify-center items-center mb-8">
+                <Image source={icons.logo} className="w-[400px] h-[100px] " resizeMode="contain" />
+            </View>
+
+            <Text className="text-5xl font-bold text-light-100">Reliable Services,</Text>
+            <Text className="text-5xl font-bold text-accent">Zero Friction.</Text>
+            <Text className="text-white/80 text-lg mt-2">
+                Find verified professionals for every job — instantly.
+            </Text>
+
+            {/* Basic Search Bar UI */}
+            {/*<View className="bg-white/10 flex-row items-center p-4 rounded-2xl mt-6 border border-white/20">*/}
+            {/*    <Text className="text-white/50">Search for services...</Text>*/}
+            {/*</View>*/}
+            <SearchBar placeholder="Search for Services" onPress={() => router.push("/search") } />
+
+            <View className="mt-10 mb-4">
+                <Text className="text-4xl text-white font-bold">Services</Text>
+                <Text className="text-white/60 text-sm mt-1">
+                    Browse popular categories or search above.
+                </Text>
+            </View>
+        </View>
+    );
+
+    return (
+        <View className="flex-1 bg-primary">
+            <FlatList
+                data={services}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={2}
+                columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 20 }}
+                ListHeaderComponent={Header}
+                contentContainerStyle={{ paddingBottom: 40 }}
+                renderItem={({ item }) => (
+                    <View className="w-[48%] bg-white/5 rounded-3xl p-5 mb-4 items-center border border-white/5">
+                        <Image source={item.img} className="w-24 h-24" resizeMode="contain" />
+                        <Text className="text-light-100 font-medium mt-3 text-center">
+                            {item.name}
+                        </Text>
+                    </View>
+                )}
             />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
-
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+        </View>
+    );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
