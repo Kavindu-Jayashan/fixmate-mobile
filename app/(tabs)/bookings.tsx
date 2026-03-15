@@ -22,15 +22,19 @@ const STATUS_TABS = [
   { key: "PAYMENT_PENDING", label: "Pay Pending" },
   { key: "COMPLETED", label: "Completed" },
   { key: "REJECTED", label: "Rejected" },
-];
+  { key: "CANCELLED", label: "Cancelled" },
+] as const;
+
+type StatusTab = (typeof STATUS_TABS)[number]["key"];
 
 const BOOKING_STATUS_PRIORITY: Record<string, number> = {
-  PENDING: 1,
+  IN_PROGRESS: 1,
   ACCEPTED: 2,
-  IN_PROGRESS: 3,
+  PENDING: 3,
   PAYMENT_PENDING: 4,
   COMPLETED: 5,
-  REJECTED: 6,
+  CANCELLED: 6,
+  REJECTED: 7,
 };
 
 function sortBookings(bookings: any[]) {

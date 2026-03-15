@@ -110,8 +110,9 @@ export interface EarningSummary {
 // ─── Booking ─────────────────────────────────────────
 export type BookingStatus =
   | "PENDING"
-  | "CONFIRMED"
+  | "ACCEPTED"
   | "IN_PROGRESS"
+  | "PAYMENT_PENDING"
   | "COMPLETED"
   | "CANCELLED"
   | "REJECTED";
@@ -131,31 +132,40 @@ export interface BookingRequest {
 
 export interface CustomerBooking {
   bookingId: number;
-  providerServiceId: number;
-  serviceTitle: string;
+  serviceName: string;
   providerName: string;
+  customerName: string;
+  phone: string;
+  providerPhone: string;
+  address: string;
+  city: string;
   status: BookingStatus;
+  amount: number | null;
   scheduledAt: string;
   pricingType: string;
-  totalAmount: number | null;
-  createdAt: string;
+  description: string;
+  rejectionReason: string | null;
+  rejectedAt: string | null;
 }
 
 export interface ProviderBooking {
   bookingId: number;
-  providerServiceId: number;
-  serviceTitle: string;
-  customerName: string;
-  customerEmail: string;
   status: BookingStatus;
-  scheduledAt: string;
-  pricingType: string;
+  providerServiceId: number;
+  customerName: string;
+  customerPhone: string;
+  serviceTitle: string;
   description: string;
-  totalAmount: number | null;
-  addressLine1: string;
-  city: string;
-  province: string;
-  phone: string;
+  scheduledAt: string;
+  startedAt: string | null;
+  paymentAmount: number | null;
+  paymentType: string;
+  hourlyRate: number | null;
+  bookingAddress: string;
+  bookingPhone: string;
+  latitude: number | null;
+  longitude: number | null;
+  paymentStatus: string | null;
 }
 
 // ─── Wanted ──────────────────────────────────────────
