@@ -3,9 +3,11 @@ import { Platform } from "react-native";
 import storage from "@/lib/storage";
 
 // Android emulator uses 10.0.2.2 to reach host localhost
-const DEFAULT_URL = Platform.OS === "android"
-  ? "http://10.0.2.2:8081"
-  : "http://localhost:8081";
+// const DEFAULT_URL = Platform.OS === "android"
+//   ? "http://10.0.2.2:8081"
+//     : "http://192.168.8.151:8081";
+
+const DEFAULT_URL = "https://fixmate.works";
 
 const api = axios.create({
   baseURL: DEFAULT_URL,
