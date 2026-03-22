@@ -79,7 +79,9 @@ export default function ProviderCard({ provider }: Props) {
         <View className="bg-accent/15 rounded-xl px-3 py-1">
           <Text className="text-accent text-xs font-semibold">
             {provider.fixedPriceAvailable
-              ? `Rs. ${provider.fixedPrice}`
+              ? (provider.fixedPrice != null
+                  ? `Rs. ${provider.fixedPrice}`
+                  : "Fixed Price Available")
               : provider.hourlyRate
               ? `Rs. ${provider.hourlyRate}/hr`
               : "—"}

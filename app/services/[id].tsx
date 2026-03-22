@@ -68,7 +68,9 @@ export default function ServiceDetails() {
             <View className="bg-accent/15 rounded-xl px-3 py-1.5">
               <Text className="text-accent font-semibold text-sm">
                 {service.fixedPriceAvailable
-                  ? `Fixed: Rs. ${service.fixedPrice}`
+                  ? (service.fixedPrice != null
+                      ? `Fixed: Rs. ${service.fixedPrice}`
+                      : "Fixed Price Available")
                   : service.hourlyRate
                   ? `Rs. ${service.hourlyRate}/hr`
                   : "—"}
