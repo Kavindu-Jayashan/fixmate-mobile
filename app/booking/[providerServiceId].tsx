@@ -14,6 +14,7 @@ import api from "@/lib/api";
 import Toast from "react-native-toast-message";
 import type { PublicServiceCard } from "@/types";
 import MapPicker from "@/components/MapPicker";
+import CalendarPicker from "@/components/CalendarPicker";
 
 export default function BookingScreen() {
   const { providerServiceId } = useLocalSearchParams<{ providerServiceId: string }>();
@@ -107,12 +108,9 @@ export default function BookingScreen() {
     }
   }
 
-  function handleDateChange(text: string) {
-    setSelectedDate(text);
-    // Auto fetch slots when a valid date like YYYY-MM-DD is entered
-    if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
-      fetchSlots(text);
-    }
+  function handleDateSelect(date: string) {
+    setSelectedDate(date);
+    fetchSlots(date);
   }
 
   async function handleBook() {
@@ -211,7 +209,9 @@ export default function BookingScreen() {
           <View className="flex-row items-center gap-3 mt-2">
             <Text className="text-accent text-sm font-semibold">
               {service.fixedPriceAvailable
-                ? `Fixed: Rs. ${service.fixedPrice}`
+                ? (service.fixedPrice != null
+                    ? `Fixed: Rs. ${service.fixedPrice}`
+                    : "Fixed Price Available")
                 : service.hourlyRate
                 ? `Rs. ${service.hourlyRate}/hr`
                 : "—"}
@@ -256,15 +256,9 @@ export default function BookingScreen() {
         <View className="mx-5">
           {/* Date */}
           <Text className="text-light-300 text-xs font-semibold mb-2">
-            DATE (YYYY-MM-DD)
+            SELECT DATE
           </Text>
-          <TextInput
-            className={inputClass}
-            placeholder="e.g. 2026-03-15"
-            placeholderTextColor="#9CA4AB"
-            value={selectedDate}
-            onChangeText={handleDateChange}
-          />
+          <CalendarPicker value={selectedDate} onChange={handleDateSelect} />
 
           {/* Time slots */}
           <Text className="text-light-300 text-xs font-semibold mb-2">
@@ -296,9 +290,7 @@ export default function BookingScreen() {
             </View>
           ) : selectedDate ? (
             <Text className="text-light-300/60 text-sm mb-4">
-              {/^\d{4}-\d{2}-\d{2}$/.test(selectedDate)
-                ? "No available slots for this date"
-                : "Enter a valid date to see slots"}
+              No available slots for this date
             </Text>
           ) : (
             <Text className="text-light-300/60 text-sm mb-4">
